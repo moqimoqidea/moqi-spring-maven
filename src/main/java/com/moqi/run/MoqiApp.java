@@ -2,12 +2,16 @@ package com.moqi.run;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-public class MoqiSpringMavenApplication {
+@ComponentScan(basePackages = {
+        "com.moqi.controller"
+})
+public class MoqiApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(MoqiSpringMavenApplication.class, args);
+        SpringApplication.run(MoqiApp.class, args);
     }
 
 }
