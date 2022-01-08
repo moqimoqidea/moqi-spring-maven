@@ -6,7 +6,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
-        "com.moqi.controller"
+        "com.moqi.controller",
+        "com.moqi.service"
 })
 public class MoqiApp {
 
