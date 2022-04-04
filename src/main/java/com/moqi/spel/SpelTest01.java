@@ -1,15 +1,17 @@
 package com.moqi.spel;
 
 import com.moqi.validator.Person;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.SimpleEvaluationContext;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author moqi
@@ -32,6 +34,43 @@ public class SpelTest01 {
         construct();
 
         booleanTest();
+
+        convertDeclareTypeTest();
+
+        autoGrowTest();
+    }
+
+    private static void autoGrowTest() {
+        // Turn on:
+        // - auto null reference initialization
+        // - auto collection growing
+        SpelParserConfiguration config = new SpelParserConfiguration(true, true);
+
+        ExpressionParser parser = new SpelExpressionParser(config);
+
+        Expression expression = parser.parseExpression("stringList[3]");
+
+        StringListClass stringListClass = new StringListClass();
+
+        // stringListClass.list will now be a real collection of 4 entries
+        // Each entry is a new empty String
+        expression.getValue(stringListClass);
+        log.info("stringListClass:{}", stringListClass);
+    }
+
+    private static void convertDeclareTypeTest() {
+        BooleanListClass booleanListClass = new BooleanListClass();
+        booleanListClass.booleanList.add(true);
+
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+
+        // "false" is passed in here as a String. SpEL and the conversion service
+        // will recognize that it needs to be a Boolean and convert it accordingly.
+        new SpelExpressionParser().parseExpression("booleanList[0]").setValue(context, booleanListClass, "false");
+
+        // b is false
+        Boolean b = booleanListClass.booleanList.get(0);
+        log.info("b:{}", b);
     }
 
     private static void booleanTest() {
@@ -90,4 +129,14 @@ public class SpelTest01 {
         log.info(MESSAGE, message);
     }
 
+}
+
+@Data
+class BooleanListClass {
+    public final List<Boolean> booleanList = new ArrayList<>();
+}
+
+@Data
+class StringListClass {
+    public final List<String> stringList = new ArrayList<>();
 }
