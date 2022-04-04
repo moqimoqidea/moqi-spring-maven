@@ -5,6 +5,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -15,12 +16,33 @@ import java.util.UUID;
 public class ConverterTest01 {
 
     public static void main(String[] args) {
+        uuidTest();
+
+        arrayTest();
+    }
+
+    private static void uuidTest() {
         String uuidString = UUID.randomUUID().toString();
         log.info("uuidString:{}", uuidString);
 
         selfConverter(uuidString);
 
         springConvert(uuidString);
+    }
+
+    private static void arrayTest() {
+        String commaSeparatedString = "1,2,3,4,5";
+
+        springConvertToArray(commaSeparatedString);
+    }
+
+    private static void springConvertToArray(String commaSeparatedString) {
+        DefaultConversionService defaultConversionService = new DefaultConversionService();
+        String[] stringArray = defaultConversionService.convert(commaSeparatedString, String[].class);
+        log.info("stringArray:{}", Arrays.deepToString(stringArray));
+
+        Integer[] intArray = defaultConversionService.convert(commaSeparatedString, Integer[].class);
+        log.info("intArray:{}", Arrays.deepToString(intArray));
     }
 
     private static void springConvert(String uuidString) {
