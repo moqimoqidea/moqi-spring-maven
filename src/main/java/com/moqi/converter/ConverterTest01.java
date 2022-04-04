@@ -1,11 +1,13 @@
 package com.moqi.converter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,6 +21,31 @@ public class ConverterTest01 {
         uuidTest();
 
         arrayTest();
+
+        arrayToListTest();
+    }
+
+    private static void arrayToListTest() {
+        int[] intArray = {1, 2, 3, 4, 5};
+        DefaultConversionService defaultConversionService = new DefaultConversionService();
+
+        Object convert = defaultConversionService.convert(intArray,
+                TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(int.class)));
+
+        //noinspection unchecked
+        List<Integer> list = (List<Integer>) convert;
+        log.info("list:{}", list);
+    }
+
+    private static void arrayTest() {
+        String commaSeparatedString = "1,2,3,4,5";
+
+        DefaultConversionService defaultConversionService = new DefaultConversionService();
+        String[] stringArray = defaultConversionService.convert(commaSeparatedString, String[].class);
+        log.info("stringArray:{}", Arrays.deepToString(stringArray));
+
+        Integer[] intArray = defaultConversionService.convert(commaSeparatedString, Integer[].class);
+        log.info("intArray:{}", Arrays.deepToString(intArray));
     }
 
     private static void uuidTest() {
@@ -28,21 +55,6 @@ public class ConverterTest01 {
         selfConverter(uuidString);
 
         springConvert(uuidString);
-    }
-
-    private static void arrayTest() {
-        String commaSeparatedString = "1,2,3,4,5";
-
-        springConvertToArray(commaSeparatedString);
-    }
-
-    private static void springConvertToArray(String commaSeparatedString) {
-        DefaultConversionService defaultConversionService = new DefaultConversionService();
-        String[] stringArray = defaultConversionService.convert(commaSeparatedString, String[].class);
-        log.info("stringArray:{}", Arrays.deepToString(stringArray));
-
-        Integer[] intArray = defaultConversionService.convert(commaSeparatedString, Integer[].class);
-        log.info("intArray:{}", Arrays.deepToString(intArray));
     }
 
     private static void springConvert(String uuidString) {
