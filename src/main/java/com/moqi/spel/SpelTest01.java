@@ -41,6 +41,44 @@ public class SpelTest01 {
         autoGrowTest();
 
         spelCompilerModeTest();
+
+        listMapTest();
+
+        arrayTest();
+    }
+
+    private static void arrayTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+        int[] numbers1 = (int[]) parser.parseExpression("new int[4]").getValue(context);
+        log.info("numbers1:{}", numbers1);
+
+        // Array with initializer
+        int[] numbers2 = (int[]) parser.parseExpression("new int[]{1,2,3}").getValue(context);
+        log.info("numbers2:{}", numbers2);
+
+        // Multi dimensional array
+        int[][] numbers3 = (int[][]) parser.parseExpression("new int[4][5]").getValue(context);
+        log.info("numbers3:{}", Arrays.deepToString(numbers3));
+    }
+
+    private static void listMapTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+
+        // evaluates to a Java list containing the four numbers
+        List<?> numbers = (List<?>) parser.parseExpression("{1,2,3,4}").getValue(context);
+        log.info("numbers:{}", numbers);
+
+        List<?> listOfLists = (List<?>) parser.parseExpression("{{'a','b'},{'x','y'}}").getValue(context);
+        log.info("listOfLists:{}", listOfLists);
+
+        // evaluates to a Java map containing the two entries
+        Map<?, ?> inventorInfo = (Map<?, ?>) parser.parseExpression("{name:'Nikola',dob:'10-July-1856'}").getValue(context);
+        log.info("inventorInfo:{}", inventorInfo);
+
+        Map<?, ?> mapOfMaps = (Map<?, ?>) parser.parseExpression("{name:{first:'Nikola',last:'Tesla'},dob:{day:10,month:'July',year:1856}}").getValue(context);
+        log.info("mapOfMaps:{}", mapOfMaps);
     }
 
     private static void spelCompilerModeTest() {
