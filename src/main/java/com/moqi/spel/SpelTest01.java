@@ -47,6 +47,50 @@ public class SpelTest01 {
         arrayTest();
 
         methodTest();
+
+        compliexBooleanTest();
+
+        classTest();
+    }
+
+    private static void classTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        Class<?> dateClass = parser.parseExpression("T(java.util.Date)").getValue(Class.class);
+        log.info("dateClass:{}", dateClass);
+
+        Class<?> stringClass = parser.parseExpression("T(String)").getValue(Class.class);
+        log.info("stringClass:{}", stringClass);
+
+        boolean trueValue = Objects.requireNonNull(parser.parseExpression(
+                        "T(java.math.RoundingMode).CEILING < T(java.math.RoundingMode).FLOOR")
+                .getValue(Boolean.class));
+        log.info("trueValue:{}", trueValue);
+
+        Integer maxValue = Objects.requireNonNull(
+                parser.parseExpression("T(java.lang.Math).max(10, 20)").getValue(int.class));
+        log.info("maxValue:{}", maxValue);
+
+        boolean isMan = Objects.requireNonNull(
+                parser.parseExpression("T(com.moqi.validator.Person).isMan('tom smith')").getValue(boolean.class));
+        log.info("isMan:{}", isMan);
+    }
+
+    private static void compliexBooleanTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        // evaluates to false
+        boolean falseValue = Objects.requireNonNull(
+                parser.parseExpression("'xyz' instanceof T(Integer)").getValue(Boolean.class));
+        log.info("falseValue:{}", falseValue);
+
+        // evaluates to true
+        boolean trueValue = Objects.requireNonNull(
+                parser.parseExpression("'5.00' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class));
+        log.info("trueValue:{}", trueValue);
+
+        // evaluates to false
+        boolean falseValue2 = Objects.requireNonNull(parser.parseExpression(
+                "'5.0067' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class));
+        log.info("falseValue2:{}", falseValue2);
     }
 
     private static void methodTest() {

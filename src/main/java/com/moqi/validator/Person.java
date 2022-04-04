@@ -33,7 +33,7 @@ public class Person implements Serializable {
     /**
      * for test spel
      */
-    public boolean isMan(String name) {
+    public static boolean isMan(String name) {
         return name.startsWith("tom");
     }
 
