@@ -1,7 +1,9 @@
 package com.moqi.validator;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -13,6 +15,8 @@ import java.util.Date;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Person implements Serializable {
 
     private String name;
@@ -25,5 +29,12 @@ public class Person implements Serializable {
     private Date birthday;
 
     private String nationality;
+
+    /**
+     * for test spel
+     */
+    public boolean isMan(String name) {
+        return name.startsWith("tom");
+    }
 
 }

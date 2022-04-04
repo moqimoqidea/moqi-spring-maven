@@ -45,11 +45,21 @@ public class SpelTest01 {
         listMapTest();
 
         arrayTest();
+
+        methodTest();
+    }
+
+    private static void methodTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        // string literal, evaluates to "bc"
+        String bc = parser.parseExpression("'abc'.substring(1, 3)").getValue(String.class);
+        log.info("bc:{}", bc);
     }
 
     private static void arrayTest() {
         ExpressionParser parser = new SpelExpressionParser();
         EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+
         int[] numbers1 = (int[]) parser.parseExpression("new int[4]").getValue(context);
         log.info("numbers1:{}", numbers1);
 
