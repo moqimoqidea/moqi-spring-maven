@@ -26,7 +26,7 @@ public class PersonValidator implements Validator {
         if (p.getAge() < MIN_AGE) {
             e.rejectValue("age", "age.negative");
         } else if (p.getAge() > MAX_AGE) {
-            e.rejectValue("age", "age.too.high");
+            e.rejectValue("age", "-1", "age value is too high!");
         }
     }
 
