@@ -1,4 +1,4 @@
-package com.moqi.validator;
+package com.moqi.bean.validator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

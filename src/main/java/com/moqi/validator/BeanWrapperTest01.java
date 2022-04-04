@@ -1,6 +1,7 @@
 package com.moqi.validator;
 
-import lombok.Data;
+import com.moqi.bean.validator.Company;
+import com.moqi.bean.validator.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -37,16 +38,4 @@ public class BeanWrapperTest01 {
         log.info("company:{}", company.getWrappedInstance());
     }
 
-}
-
-@Data
-class Company {
-    private String name;
-    private Employee managingDirector;
-}
-
-@Data
-class Employee {
-    private String name;
-    private float salary;
 }

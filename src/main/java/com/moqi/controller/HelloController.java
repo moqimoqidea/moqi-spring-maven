@@ -1,7 +1,7 @@
 package com.moqi.controller;
 
 import com.moqi.service.UserService;
-import com.moqi.validator.Person;
+import com.moqi.bean.validator.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,7 +1,8 @@
 package com.moqi.spel;
 
-import com.moqi.validator.Person;
-import lombok.Data;
+import com.moqi.bean.validator.BooleanListClass;
+import com.moqi.bean.validator.Person;
+import com.moqi.bean.validator.StringListClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -179,7 +180,7 @@ public class SpelTest01 {
         log.info("maxValue:{}", maxValue);
 
         boolean isMan = Objects.requireNonNull(
-                parser.parseExpression("T(com.moqi.validator.Person).isMan('tom smith')").getValue(boolean.class));
+                parser.parseExpression("T(com.moqi.bean.validator.Person).isMan('tom smith')").getValue(boolean.class));
         log.info("isMan:{}", isMan);
     }
 
@@ -341,14 +342,4 @@ public class SpelTest01 {
         log.info(MESSAGE, message);
     }
 
-}
-
-@Data
-class BooleanListClass {
-    public final List<Boolean> booleanList = new ArrayList<>();
-}
-
-@Data
-class StringListClass {
-    public final List<String> stringList = new ArrayList<>();
 }
