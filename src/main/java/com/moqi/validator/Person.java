@@ -24,4 +24,6 @@ public class Person implements Serializable {
     @DateTimeFormat(pattern = "yyyy MM dd")
     private Date birthday;
 
+    private String nationality;
+
 }
