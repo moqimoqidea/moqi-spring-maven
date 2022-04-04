@@ -16,8 +16,10 @@ import java.util.Random;
 @Slf4j
 public class UserService {
 
+    private static final Random RANDOM = new Random();
+
     public int getRandomNumber(int maxValue) {
-        return new Random().nextInt(maxValue);
+        return RANDOM.nextInt(maxValue);
     }
 
 }

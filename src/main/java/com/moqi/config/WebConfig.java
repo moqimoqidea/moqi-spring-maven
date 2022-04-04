@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 public class WebConfig implements WebMvcConfigurer {
 
     /**
+     * moqiFIXME: 4/4/22 12:43: not work
      * 注册全局日期格式化器
      */
     @Override
