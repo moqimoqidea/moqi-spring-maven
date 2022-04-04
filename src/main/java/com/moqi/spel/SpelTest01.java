@@ -57,6 +57,45 @@ public class SpelTest01 {
         registerMethodTest();
 
         evilsTest();
+
+        filterTest();
+
+        mapTest();
+    }
+
+    private static void mapTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+
+        List<Person> list = List.of(
+                new Person("Tom Smith"),
+                new Person("Albert Einstein"),
+                new Person("Isaac Newton"));
+
+        context.setVariable("list", list);
+
+        //noinspection unchecked
+        List<String> afterMapList = (List<String>) parser.parseExpression(
+                "#list.![#this.name]").getValue(context);
+        log.info("afterMapList:{}", afterMapList);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void filterTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+
+        List<Integer> list = List.of(2, 3, 5, 7, 11, 13, 17);
+        context.setVariable("list", list);
+        List<Integer> filterList = (List<Integer>) parser.parseExpression(
+                "#list.?[#this>10]").getValue(context);
+        log.info("filterList:{}", filterList);
+
+        Map<String, Integer> map = Map.of("a", 1, "b", 2, "c", 3);
+        context.setVariable("map", map);
+        Map<String, Integer> filterMap = (Map<String, Integer>) parser.parseExpression(
+                "#map.?[value<=2]").getValue(context);
+        log.info("filterMap:{}", filterMap);
     }
 
     private static void evilsTest() {

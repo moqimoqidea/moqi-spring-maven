@@ -30,6 +30,10 @@ public class Person implements Serializable {
 
     private String nationality;
 
+    public Person(String name) {
+        this.name = name;
+    }
+
     /**
      * for test spel
      */
