@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.SpelCompilerMode;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.SimpleEvaluationContext;
@@ -38,6 +39,17 @@ public class SpelTest01 {
         convertDeclareTypeTest();
 
         autoGrowTest();
+
+        spelCompilerModeTest();
+    }
+
+    private static void spelCompilerModeTest() {
+        SpelParserConfiguration config = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE,
+                SpelTest01.class.getClassLoader());
+        SpelExpressionParser parser = new SpelExpressionParser(config);
+        Expression expr = parser.parseExpression("'payload'");
+        String payload = (String)expr.getValue(expr);
+        log.info("payload:{}", payload);
     }
 
     private static void autoGrowTest() {
