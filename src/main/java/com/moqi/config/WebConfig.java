@@ -1,6 +1,6 @@
 package com.moqi.config;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
      * 注册全局日期格式化器
      */
     @Override
-    public void addFormatters(@NotNull FormatterRegistry formatterRegistry) {
+    public void addFormatters(@NonNull FormatterRegistry formatterRegistry) {
         // Register JSR-310 date conversion with a specific global format
         DateTimeFormatterRegistrar dateTimeFormatterRegistrar = new DateTimeFormatterRegistrar();
         dateTimeFormatterRegistrar.setDateFormatter(DateTimeFormatter.ofPattern("yyyy MM dd hh : mm : ss"));
