@@ -51,6 +51,64 @@ public class SpelTest01 {
         compliexBooleanTest();
 
         classTest();
+
+        variableTest();
+
+        registerMethodTest();
+
+        evilsTest();
+    }
+
+    private static void evilsTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+
+        Person personWithName = Person.builder().name("Nikola Tesla").build();
+        String name = parser.parseExpression("name?:'Elvis Presley'")
+                .getValue(context, personWithName, String.class);
+        // Nikola Tesla
+        log.info("name:{}", name);
+
+        Person personNoName = Person.builder().build();
+        String defaultName = parser.parseExpression("name?:'Elvis Presley'")
+                .getValue(context, personNoName, String.class);
+        // Elvis Presley
+        log.info("defaultName:{}", defaultName);
+    }
+
+    private static void registerMethodTest() {
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+
+        try {
+            context.setVariable("isMan", Person.class.getDeclaredMethod("isMan", String.class));
+            boolean isMan = Objects.requireNonNull(
+                    parser.parseExpression("#isMan('tom smith')").getValue(context, boolean.class));
+            log.info("isMan:{}", isMan);
+
+            boolean isNotMan = Objects.requireNonNull(
+                    parser.parseExpression("#isMan('jerry smith')").getValue(context, boolean.class));
+            log.info("isNotMan:{}", isNotMan);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void variableTest() {
+        // create an array of integers
+        List<Integer> primes = List.of(2, 3, 5, 7, 11, 13, 17);
+
+        // create parser and set variable 'primes' as the array of integers
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+        context.setVariable("primes", primes);
+
+        // all prime numbers > 10 from the list (using selection ?{...})
+        // evaluates to [11, 13, 17]
+        //noinspection unchecked
+        List<Integer> primesGreaterThanTen = (List<Integer>) parser.parseExpression(
+                "#primes.?[#this>10]").getValue(context);
+        log.info("primesGreaterThanTen:{}", primesGreaterThanTen);
     }
 
     private static void classTest() {
