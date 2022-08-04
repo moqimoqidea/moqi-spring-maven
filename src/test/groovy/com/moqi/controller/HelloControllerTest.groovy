@@ -11,7 +11,7 @@ import spock.lang.Specification
 class HelloControllerTest extends Specification {
 
     UserService userService = Mock()
-    HelloController helloController = new HelloController(userService: userService)
+    HelloController helloController = new HelloController(userService)
 
     def "Person"() {
         given:
