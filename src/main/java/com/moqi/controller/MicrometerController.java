@@ -23,7 +23,12 @@ public class MicrometerController {
     GraphiteConfig graphiteConfig = new GraphiteConfig() {
         @Override
         public String host() {
-            return "mygraphitehost";
+            return "localhost";
+        }
+
+        @Override
+        public int port() {
+            return 8080;
         }
 
         @Override
