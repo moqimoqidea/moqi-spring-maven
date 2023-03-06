@@ -19,6 +19,7 @@
     <properties>
         <java.version>17</java.version>
         <springcloud.version>2022.0.1</springcloud.version>
+        <micrometer.version>1.10.4</micrometer.version>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +50,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- micrometer -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-bom</artifactId>
+                <version>${micrometer.version}</version>
+                <type>pom</type>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -76,8 +86,14 @@
 
         <dependency>
             <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>${micrometer.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-graphite</artifactId>
-            <version>1.10.4</version>
+            <version>${micrometer.version}</version>
         </dependency>
 
         <dependency>
