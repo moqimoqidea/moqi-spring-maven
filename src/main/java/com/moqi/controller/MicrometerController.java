@@ -1,7 +1,11 @@
 package com.moqi.controller;
 
+import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.util.HierarchicalNameMapper;
+import io.micrometer.graphite.GraphiteConfig;
+import io.micrometer.graphite.GraphiteMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,19 +20,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MicrometerController {
 
-    private MeterRegistry registry;
+    GraphiteConfig graphiteConfig = new GraphiteConfig() {
+        @Override
+        public String host() {
+            return "mygraphitehost";
+        }
 
-    public MicrometerController(MeterRegistry registry) {
-        this.registry = registry;
-    }
+        @Override
+        public String get(String k) {
+            return null; // accept the rest of the defaults
+        }
+    };
+
+    MeterRegistry registry = new GraphiteMeterRegistry(graphiteConfig, Clock.SYSTEM, HierarchicalNameMapper.DEFAULT);
+
 
     Counter endpointCounter =
-        Counter.builder("endpointCounter")
-               .description("My first endpoint counter")
-               .register(registry);
+            Counter.builder("endpointCounter")
+                    .description("My first endpoint counter")
+                    .register(registry);
 
     @GetMapping("/api/myFirstEndpoint")
-    public void getSomething(){
+    public void getSomething() {
         endpointCounter.increment();
     }
 
