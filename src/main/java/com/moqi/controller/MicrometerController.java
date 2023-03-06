@@ -41,8 +41,12 @@ public class MicrometerController {
                     .register(registry);
 
     @GetMapping("/api/myFirstEndpoint")
-    public void getSomething() {
+    public String getSomething() {
         endpointCounter.increment();
+
+        String data = "get api myFirstEndpoint success";
+        log.info("data:{}", data);
+        return data;
     }
 
 }
